@@ -15,6 +15,9 @@ coverage/
 index.json
 *.index.json
 
+# Probes / temp scripts
+.*-probe.ts
+
 # Editor / OS noise
 .DS_Store
 .idea/
