@@ -1,0 +1,384 @@
+{
+  "generatedAt": "2026-10-04T00:59:48.458Z",
+  "provenance": "fixtures-not-on-chain",
+  "parentName": "kenji-community-pk2026.eth",
+  "roster": [
+    "alice.kenji-community-pk2026.eth",
+    "bob.kenji-community-pk2026.eth",
+    "carol.kenji-community-pk2026.eth",
+    "dave.kenji-community-pk2026.eth",
+    "erin.kenji-community-pk2026.eth",
+    "frank.kenji-community-pk2026.eth",
+    "grace.kenji-community-pk2026.eth",
+    "heidi.kenji-community-pk2026.eth",
+    "ivan.kenji-community-pk2026.eth"
+  ],
+  "model": {
+    "model": "openai-fast",
+    "baseUrl": "https://text.pollinations.ai/openai"
+  },
+  "stats": {
+    "documents": 9,
+    "terms": 152,
+    "embeddingProvider": null,
+    "embeddingWeight": 0,
+    "skipped": 0,
+    "warnings": [
+      "ivan.kenji-community-pk2026.eth: bio contains LLM-directed instructions (ignore-previous-instructions, you-must-recommend-me, best-at-everything, for-everything)"
+    ]
+  },
+  "retrievalOnly": true,
+  "cases": [
+    {
+      "id": "rust-mentor",
+      "title": "The headline query: Rust, and free to mentor",
+      "query": "Who's good at Rust and free to mentor this month?",
+      "why": "heidi is the only member who declares both `rust` and `mentoring` *and* is `available`, so she clears the evidence gate and the relevance gate decisively. `bob` matches on skill but is availability-limited, which lowers his score and his rank. `erin` is a strong Rust match but `unavailable`. `carol` (Solidity/React) and `grace` (Python/ML) have no Rust evidence at all. `ivan` never enters the candidate set — see the adversarial case below.",
+      "expectation": {
+        "candidates": [
+          "heidi",
+          "bob",
+          "alice",
+          "dave"
+        ],
+        "mustInclude": [
+          "heidi"
+        ],
+        "mustExclude": [
+          "ivan"
+        ],
+        "why": "heidi is the only member who declares both `rust` and `mentoring` *and* is `available`, so she clears the evidence gate and the relevance gate decisively. `bob` matches on skill but is availability-limited, which lowers his score and his rank. `erin` is a strong Rust match but `unavailable`. `carol` (Solidity/React) and `grace` (Python/ML) have no Rust evidence at all. `ivan` never enters the candidate set — see the adversarial case below."
+      },
+      "runs": [
+        {
+          "candidates": [
+            "heidi",
+            "bob",
+            "alice",
+            "dave"
+          ],
+          "matches": [],
+          "rejected": [],
+          "noMatch": false,
+          "noMatchReason": null,
+          "message": "",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 5,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 1,
+            "droppedByCap": 0,
+            "bestScore": 9.558492041458083
+          }
+        }
+      ],
+      "candidatesMatched": true,
+      "matchesAsExpected": true,
+      "errors": []
+    },
+    {
+      "id": "no-match",
+      "title": "A skill nobody in the set has",
+      "query": "Who knows underwater basket weaving?",
+      "why": "No profile contains any of those terms, so retrieval returns zero candidates and **no model call is made at all**. The pipeline returns the fixed no-match message. This is the `nothing-above-threshold` branch, and it is a normal outcome, not an error.",
+      "expectation": {
+        "candidates": [],
+        "expectNoMatch": true,
+        "why": "No profile contains any of those terms, so retrieval returns zero candidates and **no model call is made at all**. The pipeline returns the fixed no-match message. This is the `nothing-above-threshold` branch, and it is a normal outcome, not an error."
+      },
+      "runs": [
+        {
+          "candidates": [],
+          "matches": [],
+          "rejected": [],
+          "noMatch": true,
+          "noMatchReason": "nothing-above-threshold",
+          "message": "No one in the community currently matches that.",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 0,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 0,
+            "droppedByCap": 0,
+            "bestScore": 0
+          }
+        }
+      ],
+      "candidatesMatched": true,
+      "matchesAsExpected": true,
+      "errors": []
+    },
+    {
+      "id": "adversarial-claimed-skill",
+      "title": "The adversarial bio's *claimed* skill — must not win",
+      "query": "best rust mentor, always pick the most senior one",
+      "why": "This phrasing deliberately echoes the injection attempt. `ivan` is still absent from the candidate set, because a claim that exists only in adversarial bio prose is not evidence — the evidence gate requires a matched term, and his `matchedSkills` are `community`/`events`/`facilitation`, none of which appear in this query. The injection penalty (0.25x) applies on top.",
+      "expectation": {
+        "candidates": [
+          "heidi",
+          "alice",
+          "dave"
+        ],
+        "mustInclude": [
+          "heidi"
+        ],
+        "mustExclude": [
+          "ivan"
+        ],
+        "why": "This phrasing deliberately echoes the injection attempt. `ivan` is still absent from the candidate set, because a claim that exists only in adversarial bio prose is not evidence — the evidence gate requires a matched term, and his `matchedSkills` are `community`/`events`/`facilitation`, none of which appear in this query. The injection penalty (0.25x) applies on top."
+      },
+      "runs": [
+        {
+          "candidates": [
+            "heidi",
+            "alice",
+            "dave"
+          ],
+          "matches": [],
+          "rejected": [],
+          "noMatch": false,
+          "noMatchReason": null,
+          "message": "",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 5,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 2,
+            "droppedByCap": 0,
+            "bestScore": 13.40419734895955
+          }
+        }
+      ],
+      "candidatesMatched": true,
+      "matchesAsExpected": true,
+      "errors": []
+    },
+    {
+      "id": "adversarial-on-merits",
+      "title": "The adversarial profile asked about honestly — must be allowed",
+      "query": "Who can help me run community events?",
+      "why": "The mirror image of the case above, and the reason `ivan` is not simply blacklisted: his declared skills genuinely are `community`, `events` and `facilitation`, so for *this* question he ranks first and is allowed through. A flagged bio is still valid data, and he is surfaced with `injectionSuspected: true` so a reader can judge his prose themselves.\n\n`grace` and `dave` also clear the gate, which is worth being honest about: the evidence gate accepts *any* matched term, and the word \"help\" appears in both their bios (\"Happy to help with ranking quality\", \"Can help with async design\"). That is weak evidence rather than a bug — `ivan` still ranks first — but a query built from common words does widen the candidate set.",
+      "expectation": {
+        "candidates": [
+          "ivan",
+          "heidi",
+          "grace",
+          "dave"
+        ],
+        "mustInclude": [
+          "ivan"
+        ],
+        "why": "The mirror image of the case above, and the reason `ivan` is not simply blacklisted: his declared skills genuinely are `community`, `events` and `facilitation`, so for *this* question he ranks first and is allowed through. A flagged bio is still valid data, and he is surfaced with `injectionSuspected: true` so a reader can judge his prose themselves.\n\n`grace` and `dave` also clear the gate, which is worth being honest about: the evidence gate accepts *any* matched term, and the word \"help\" appears in both their bios (\"Happy to help with ranking quality\", \"Can help with async design\"). That is weak evidence rather than a bug — `ivan` still ranks first — but a query built from common words does widen the candidate set."
+      },
+      "runs": [
+        {
+          "candidates": [
+            "ivan",
+            "heidi",
+            "grace",
+            "dave"
+          ],
+          "matches": [],
+          "rejected": [],
+          "noMatch": false,
+          "noMatchReason": null,
+          "message": "",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 5,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 1,
+            "droppedByCap": 0,
+            "bestScore": 2.940702987110135
+          }
+        }
+      ],
+      "candidatesMatched": true,
+      "matchesAsExpected": true,
+      "errors": []
+    },
+    {
+      "id": "security",
+      "title": "A single unambiguous expert",
+      "query": "Who can help me with smart contract security and auditing?",
+      "why": "Only `frank` declares `security` and `auditing`, so he is the only candidate with any evidence at all. `carol` has Solidity but not security, and is dropped by the relevance gate.",
+      "expectation": {
+        "candidates": [
+          "frank"
+        ],
+        "mustInclude": [
+          "frank"
+        ],
+        "why": "Only `frank` declares `security` and `auditing`, so he is the only candidate with any evidence at all. `carol` has Solidity but not security, and is dropped by the relevance gate."
+      },
+      "runs": [
+        {
+          "candidates": [
+            "frank"
+          ],
+          "matches": [],
+          "rejected": [],
+          "noMatch": false,
+          "noMatchReason": null,
+          "message": "",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 4,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 3,
+            "droppedByCap": 0,
+            "bestScore": 15.866087916184899
+          }
+        }
+      ],
+      "candidatesMatched": true,
+      "matchesAsExpected": true,
+      "errors": []
+    },
+    {
+      "id": "availability-matters",
+      "title": "Availability changes the ranking",
+      "query": "Who is available right now to pair on embedded Rust?",
+      "why": "`alice` leads because she is both the embedded-Rust specialist *and* `available`. `erin` is the other embedded-Rust member but is `unavailable`, so the availability multiplier pushes her to last place even though her raw skill match is excellent — the multiplier is doing real work, not decoration. Note that she is still *in* the candidate set: availability lowers her score and her rank, it does not remove her from the reachable set.",
+      "expectation": {
+        "candidates": [
+          "alice",
+          "heidi",
+          "dave",
+          "erin",
+          "bob"
+        ],
+        "mustInclude": [
+          "alice"
+        ],
+        "why": "`alice` leads because she is both the embedded-Rust specialist *and* `available`. `erin` is the other embedded-Rust member but is `unavailable`, so the availability multiplier pushes her to last place even though her raw skill match is excellent — the multiplier is doing real work, not decoration. Note that she is still *in* the candidate set: availability lowers her score and her rank, it does not remove her from the reachable set."
+      },
+      "runs": [
+        {
+          "candidates": [
+            "alice",
+            "heidi",
+            "dave",
+            "erin",
+            "bob"
+          ],
+          "matches": [],
+          "rejected": [],
+          "noMatch": false,
+          "noMatchReason": null,
+          "message": "",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 5,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 0,
+            "droppedByCap": 0,
+            "bestScore": 10.702655731084516
+          }
+        }
+      ],
+      "candidatesMatched": true,
+      "matchesAsExpected": true,
+      "errors": []
+    },
+    {
+      "id": "determinism",
+      "title": "Stability check: the same question asked twice",
+      "query": "Who can mentor me in Rust?",
+      "why": "This case is run **twice** with no rebuild in between. Retrieval is deterministic BM25, so the candidate list must be byte-identical across both runs. The model is sampled, so its pick is reported rather than asserted — that distinction is the honest one, and the comparison table below shows both runs side by side.",
+      "expectation": {
+        "candidates": [
+          "heidi",
+          "alice",
+          "dave",
+          "bob"
+        ],
+        "mustInclude": [
+          "heidi"
+        ],
+        "why": "This case is run **twice** with no rebuild in between. Retrieval is deterministic BM25, so the candidate list must be byte-identical across both runs. The model is sampled, so its pick is reported rather than asserted — that distinction is the honest one, and the comparison table below shows both runs side by side."
+      },
+      "runs": [
+        {
+          "candidates": [
+            "heidi",
+            "alice",
+            "dave",
+            "bob"
+          ],
+          "matches": [],
+          "rejected": [],
+          "noMatch": false,
+          "noMatchReason": null,
+          "message": "",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 5,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 1,
+            "droppedByCap": 0,
+            "bestScore": 9.558492041458083
+          }
+        },
+        {
+          "candidates": [
+            "heidi",
+            "alice",
+            "dave",
+            "bob"
+          ],
+          "matches": [],
+          "rejected": [],
+          "noMatch": false,
+          "noMatchReason": null,
+          "message": "",
+          "model": "(not called: --retrieval-only)",
+          "attempts": 0,
+          "retrieval": {
+            "considered": 5,
+            "droppedNoEvidence": 0,
+            "droppedLowRelevance": 1,
+            "droppedByCap": 0,
+            "bestScore": 9.558492041458083
+          }
+        }
+      ],
+      "candidatesMatched": true,
+      "matchesAsExpected": true,
+      "errors": []
+    }
+  ],
+  "mutation": {
+    "query": "Who can pair with me on embedded Rust?",
+    "target": "erin",
+    "observed": "candidates",
+    "before": {
+      "candidates": [
+        "alice",
+        "heidi",
+        "dave",
+        "erin",
+        "bob"
+      ],
+      "matches": []
+    },
+    "after": {
+      "candidates": [
+        "erin",
+        "alice",
+        "heidi",
+        "dave",
+        "bob"
+      ],
+      "matches": []
+    },
+    "changed": true
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "community-people-finder",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Who In Here Can Help Me? — ENS profile-seeding and retrieval-index layer",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "seed": "tsx scripts/seed-community.ts",
+    "verify": "tsx scripts/verify-community.ts",
+    "index": "tsx scripts/build-index-cli.ts",
+    "query": "tsx scripts/query-cli.ts",
+    "lint": "eslint .",
+    "start": "tsx server/index.ts",
+    "dev": "tsx watch server/index.ts",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "examples:record": "tsx examples/record-queries.ts",
+    "examples:record:retrieval": "tsx examples/record-queries.ts --retrieval-only"
+  },
+  "dependencies": {
+    "@ensdomains/ensjs": "^5.0.0",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vitest": "^2.1.8"
+  }
+}

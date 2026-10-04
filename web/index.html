@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Who in here can help me?</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="masthead">
+        <h1>Who in here can help me?</h1>
+        <p class="tagline">
+          Ask a question. Every answer comes from a real ENS profile on Sepolia, and only
+          from people the retriever chose — the model picks and explains, it never invents.
+        </p>
+      </header>
+
+      <form id="ask-form" class="ask-form" autocomplete="off">
+        <label class="ask-label" for="question">Ask who can help you</label>
+        <div class="ask-row">
+          <input
+            id="question"
+            name="question"
+            type="text"
+            maxlength="500"
+            placeholder="Is anyone here good at Rust and free to mentor this month?"
+            required
+          />
+          <button id="ask-button" type="submit">Ask</button>
+        </div>
+        <div class="examples" role="group" aria-label="Example questions">
+          <span class="examples-label">Try:</span>
+          <button type="button" class="chip" data-question="Who's good at Rust and free to mentor this month?">
+            Rust mentor, this month
+          </button>
+          <button type="button" class="chip" data-question="Who can help me with smart contract security and auditing?">
+            Contract security
+          </button>
+          <button type="button" class="chip" data-question="Who can run community events?">
+            Community events
+          </button>
+          <button type="button" class="chip" data-question="Who knows underwater basket weaving?">
+            Underwater basket weaving
+          </button>
+        </div>
+      </form>
+
+      <section class="toolbar" aria-label="Index controls">
+        <button id="refresh-button" type="button" class="secondary">Refresh community index</button>
+        <p id="status-line" class="status-line">Loading index status…</p>
+      </section>
+
+      <div id="notice" class="notice" hidden role="status"></div>
+
+      <section id="results" class="results" aria-live="polite" aria-busy="false"></section>
+
+      <footer class="footer">
+        <p>
+          Profiles live in three ENS text records under the
+          <code>community.dev.</code> prefix. Answers are grounded: the model may only
+          choose from retrieved candidates, and every name it returns is checked against
+          that set before you see it.
+        </p>
+        <p id="provenance" class="provenance"></p>
+      </footer>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
